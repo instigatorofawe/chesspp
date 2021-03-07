@@ -17,6 +17,7 @@ public:
     Board();
     Board(const std::string &fen);
     std::string fen();
+    bool valid(const std::string &move);
     Board do_move(const std::string &move);
 private:
     // Bitmap representation of pieces

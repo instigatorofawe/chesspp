@@ -38,3 +38,12 @@ Board Board::do_move(const std::string &move) {
     return Board();
 }
 
+/**
+ * Determines whether or not a move is valid
+ * @param move String representation of move to check.
+ * @return true if valid, false if not.
+ */
+bool Board::valid(const std::string &move) {
+    return false;
+}
+
