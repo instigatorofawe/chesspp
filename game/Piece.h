@@ -16,10 +16,11 @@ enum PieceType {
 
 class Piece {
 public:
-    Piece(const std::string& name);
-    std::string fen();
+    explicit Piece(PieceType piece_type);
+    [[nodiscard]] std::string str() const;
+
+    PieceType piece_type;
     friend std::ostream &operator<<(std::ostream &os, const Piece &p);
-    PieceType type;
 };
 
 

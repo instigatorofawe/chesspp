@@ -3,37 +3,32 @@
 //
 
 #include "BoardBitmap.h"
+#include <algorithm>
 using std::get;
 
-std::ostream &operator<<(std::ostream &os, const BoardBitmap &b) {
-    // TODO
-    return os;
+/**
+ * Converts board position in algebraic notation (e.g. a1 through h8) to an index on the 1D state array
+ * @param position String to convert into an index
+ * @return Integer index
+ */
+int BoardBitmap::index(const std::string &position) {
+    // Convert position to lowercase
+    std::string lower = std::string(position);
+    std::transform(lower.begin(), lower.end(), lower.begin(), [](unsigned char c) -> unsigned char {
+        return std::tolower(c);
+    });
+
+    int x = lower[0] - 'a';
+    int y = lower[1] - '0' - 1;
+    return index(std::tuple<int, int>{x, y});
 }
 
-void BoardBitmap::set(const std::tuple<int, int> &location, const std::string &piece) {
-    Piece current_piece(piece);
-    this->set(location, current_piece);
-}
-
-void BoardBitmap::set(const std::tuple<int, int> &location, const Piece &piece) {
-
-}
-
-std::bitset<64> BoardBitmap::occupancy() {
-    std::bitset<64> result;
-
-    for (int c = 0; c < 64; c++) {
-        result[c] = white_pawn[c] || white_rook[c] || white_knight[c] || white_bishop[c] || white_king[c] ||
-                white_queen[c] || black_pawn[c] || black_rook[c] || black_knight[c] || black_bishop[c] ||
-                black_king[c] || black_queen[c];
-    }
-
-    return result;
-}
-
+/**
+ * Converts a tuple into a position
+ * @param position
+ * @return
+ */
 int BoardBitmap::index(const std::tuple<int, int> &position) {
+    // Row ordering
     return get<0>(position) * 8 + get<1>(position);
 }
-
-
-

@@ -18,7 +18,7 @@ TEST(test_data, test_bitarray) {
 }
 
 TEST(test_data, test_index) {
-    EXPECT_EQ(BoardBitmap::index({0, 0}), 0);
-    EXPECT_EQ(BoardBitmap::index({0, 1}), 1);
-    EXPECT_EQ(BoardBitmap::index({1, 0}), 8);
+    EXPECT_EQ(BoardBitmap::index("a1"), 0);
+    EXPECT_EQ(BoardBitmap::index("A1"), 0);
+    EXPECT_EQ(BoardBitmap::index("B1"), 8);
 }
