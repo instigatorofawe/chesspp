@@ -3,18 +3,38 @@
 //
 
 #include "Board.h"
+#include "util/FENParser.h"
 
 /**
  * Constructs a board from Forsyth-Edwards notation
  * @param fen Forsyth-Edwards notation representation of board state
  */
 Board::Board(const std::string &fen) {
-
+    // TODO
+    FENParser parser(fen);
 }
 
 /**
  * Default constructor initializes board from starting position.
  */
-Board::Board() : Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {
+Board::Board() : Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {}
 
+/**
+ * Generates FEN string representation of board state.
+ * @return
+ */
+std::string Board::fen() {
+    // TODO
+    return std::string();
 }
+
+/**
+ * Returns the board which results from doing a move.
+ * @param move String representation of move to do.
+ * @return Board which results.
+ */
+Board Board::do_move(const std::string &move) {
+    // TODO
+    return Board();
+}
+

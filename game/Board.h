@@ -10,12 +10,17 @@
 #include <string>
 #include <tuple>
 #include "Player.h"
+#include "data/BoardBitmap.h"
 
 class Board {
 public:
     Board();
     Board(const std::string &fen);
+    std::string fen();
+    Board do_move(const std::string &move);
 private:
+    // Bitmap representation of pieces
+    BoardBitmap pieces;
     // Whether castling is legal
     bool white_castle_queenside;
     bool white_castle_kingside;
