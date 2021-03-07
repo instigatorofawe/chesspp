@@ -1,1 +1,1 @@
-add_library(game Board.cpp Board.h Player.h)
+add_library(game Board.cpp Board.h Player.h Piece.cpp Piece.h)

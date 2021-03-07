@@ -1,1 +1,1 @@
-add_library(util FENParser.cpp FENParser.h)
+add_library(util FENParser.cpp FENParser.h Parser.cpp Parser.h)
