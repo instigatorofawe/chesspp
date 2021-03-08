@@ -60,6 +60,26 @@ std::string Piece::str() const {
     }
 }
 
+Piece::Piece(const std::string &name) {
+    piece_type = INVALID;
+    if (name == "K") piece_type = WHITE_KING;
+    if (name == "Q") piece_type = WHITE_QUEEN;
+    if (name == "R") piece_type = WHITE_ROOK;
+    if (name == "N") piece_type = WHITE_KNIGHT;
+    if (name == "B") piece_type = WHITE_BISHOP;
+    if (name == "P") piece_type = WHITE_PAWN;
+    if (name == "k") piece_type = BLACK_KING;
+    if (name == "q") piece_type = BLACK_QUEEN;
+    if (name == "r") piece_type = BLACK_ROOK;
+    if (name == "b") piece_type = BLACK_BISHOP;
+    if (name == "n") piece_type = BLACK_KNIGHT;
+    if (name == "p") piece_type = BLACK_PAWN;
+}
+
+Piece::Piece() {
+    piece_type = EMPTY;
+}
+
 
 
 

@@ -32,4 +32,6 @@ TEST(test_trivial, test_string_index) {
     EXPECT_EQ(x[0] - 'a', 0);
     EXPECT_EQ(x[4] - '0', 1);
     EXPECT_EQ(x[5] - '0', 2);
+
+    cout << x.find("12") << endl;
 }

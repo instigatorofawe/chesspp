@@ -17,8 +17,3 @@ TEST(test_data, test_bitarray) {
     cout << x << endl;
 }
 
-TEST(test_data, test_index) {
-    EXPECT_EQ(BoardBitmap::index("a1"), 0);
-    EXPECT_EQ(BoardBitmap::index("A1"), 0);
-    EXPECT_EQ(BoardBitmap::index("B1"), 8);
-}
