@@ -22,6 +22,7 @@ public:
     [[nodiscard]] std::string str() const;
 
     PieceType piece_type;
+    static Piece piece_index(const int& index);
     friend std::ostream &operator<<(std::ostream &os, const Piece &p);
 };
 

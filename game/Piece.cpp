@@ -80,6 +80,39 @@ Piece::Piece() {
     piece_type = EMPTY;
 }
 
+Piece Piece::piece_index(const int &index) {
+    switch (index) {
+        case WHITE_KING:
+            return Piece(WHITE_KING);
+        case WHITE_QUEEN:
+            return Piece(WHITE_QUEEN);
+        case WHITE_ROOK:
+            return Piece(WHITE_ROOK);
+        case WHITE_BISHOP:
+            return Piece(WHITE_BISHOP);
+        case WHITE_KNIGHT:
+            return Piece(WHITE_KNIGHT);
+        case WHITE_PAWN:
+            return Piece(WHITE_PAWN);
+        case BLACK_KING:
+            return Piece(BLACK_KING);
+        case BLACK_QUEEN:
+            return Piece(BLACK_QUEEN);
+        case BLACK_ROOK:
+            return Piece(BLACK_ROOK);
+        case BLACK_BISHOP:
+            return Piece(BLACK_BISHOP);
+        case BLACK_KNIGHT:
+            return Piece(BLACK_KNIGHT);
+        case BLACK_PAWN:
+            return Piece(BLACK_PAWN);
+        case EMPTY:
+            return Piece(EMPTY);
+        default:
+            return Piece(INVALID);
+    }
+}
+
 
 
 
