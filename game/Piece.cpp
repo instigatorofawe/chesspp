@@ -5,30 +5,12 @@
 #include "Piece.h"
 
 /**
- * Constructs a piece object
- * @param piece_type Type of piece
- */
-Piece::Piece(PieceType piece_type) {
-    this->piece_type = piece_type;
-}
-
-/**
- * Writes string representation to an output stream
- * @param os Stream to write to
- * @param p Piece to write
- * @return Stream written to
- */
-std::ostream &operator<<(std::ostream &os, const Piece &p) {
-    os << p.str();
-    return os;
-}
-
-/**
  * String representation of piece
+ * @param p Piece to get string representation of
  * @return Unicode string representing piece
  */
-std::string Piece::str() const {
-    switch (this->piece_type) {
+std::string str(const Piece& p) {
+    switch (p) {
         case WHITE_KING:
             return "♔";
         case WHITE_QUEEN:
@@ -60,57 +42,58 @@ std::string Piece::str() const {
     }
 }
 
-Piece::Piece(const std::string &name) {
-    piece_type = INVALID;
-    if (name == "K") piece_type = WHITE_KING;
-    if (name == "Q") piece_type = WHITE_QUEEN;
-    if (name == "R") piece_type = WHITE_ROOK;
-    if (name == "N") piece_type = WHITE_KNIGHT;
-    if (name == "B") piece_type = WHITE_BISHOP;
-    if (name == "P") piece_type = WHITE_PAWN;
-    if (name == "k") piece_type = BLACK_KING;
-    if (name == "q") piece_type = BLACK_QUEEN;
-    if (name == "r") piece_type = BLACK_ROOK;
-    if (name == "b") piece_type = BLACK_BISHOP;
-    if (name == "n") piece_type = BLACK_KNIGHT;
-    if (name == "p") piece_type = BLACK_PAWN;
+Piece piece_from_name (const std::string &name) {
+    if (name == "K") return WHITE_KING;
+    if (name == "Q") return WHITE_QUEEN;
+    if (name == "R") return WHITE_ROOK;
+    if (name == "N") return WHITE_KNIGHT;
+    if (name == "B") return WHITE_BISHOP;
+    if (name == "P") return WHITE_PAWN;
+    if (name == "k") return BLACK_KING;
+    if (name == "q") return BLACK_QUEEN;
+    if (name == "r") return BLACK_ROOK;
+    if (name == "b") return BLACK_BISHOP;
+    if (name == "n") return BLACK_KNIGHT;
+    if (name == "p") return BLACK_PAWN;
+    return INVALID;
 }
 
-Piece::Piece() {
-    piece_type = EMPTY;
-}
-
-Piece Piece::piece_index(const int &index) {
+Piece piece_index(const int &index) {
     switch (index) {
         case WHITE_KING:
-            return Piece(WHITE_KING);
+            return WHITE_KING;
         case WHITE_QUEEN:
-            return Piece(WHITE_QUEEN);
+            return WHITE_QUEEN;
         case WHITE_ROOK:
-            return Piece(WHITE_ROOK);
+            return WHITE_ROOK;
         case WHITE_BISHOP:
-            return Piece(WHITE_BISHOP);
+            return WHITE_BISHOP;
         case WHITE_KNIGHT:
-            return Piece(WHITE_KNIGHT);
+            return WHITE_KNIGHT;
         case WHITE_PAWN:
-            return Piece(WHITE_PAWN);
+            return WHITE_PAWN;
         case BLACK_KING:
-            return Piece(BLACK_KING);
+            return BLACK_KING;
         case BLACK_QUEEN:
-            return Piece(BLACK_QUEEN);
+            return BLACK_QUEEN;
         case BLACK_ROOK:
-            return Piece(BLACK_ROOK);
+            return BLACK_ROOK;
         case BLACK_BISHOP:
-            return Piece(BLACK_BISHOP);
+            return BLACK_BISHOP;
         case BLACK_KNIGHT:
-            return Piece(BLACK_KNIGHT);
+            return BLACK_KNIGHT;
         case BLACK_PAWN:
-            return Piece(BLACK_PAWN);
+            return BLACK_PAWN;
         case EMPTY:
-            return Piece(EMPTY);
+            return EMPTY;
         default:
-            return Piece(INVALID);
+            return INVALID;
     }
+}
+
+std::ostream &operator<<(std::ostream &os, const Piece &p) {
+    os << str(p);
+    return os;
 }
 
 

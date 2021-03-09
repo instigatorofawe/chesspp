@@ -11,9 +11,9 @@ using std::endl;
 
 TEST(test_game, test_piece) {
     Piece p(WHITE_ROOK);
-    EXPECT_EQ(p.str(), "♖");
+    EXPECT_EQ(str(p), "♖");
 }
 
 TEST(test_game, test_piece_index) {
-    EXPECT_EQ(Piece::piece_index(WHITE_QUEEN).piece_type, WHITE_QUEEN);
+    EXPECT_EQ(piece_index(WHITE_QUEEN), WHITE_QUEEN);
 }

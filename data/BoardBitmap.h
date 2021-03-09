@@ -14,13 +14,12 @@ class BoardBitmap {
 public:
     [[nodiscard]] std::array<std::array<bool, 8>, 8> occupancy() const;
     [[nodiscard]] std::array<std::array<Piece, 8>, 8> pieces() const;
-    [[nodiscard]] BoardBitmap move(const std::tuple<int, int> &origin, const std::tuple<int, int> &destination) const;
     void set(const std::string& location, const std::string& piece);
-    void set(const std::string& location, const PieceType& piece);
     void set(const std::string& location, const Piece& piece);
     void set(const std::tuple<int, int> &location, const std::string& piece);
-    void set(const std::tuple<int, int> &location, const PieceType& piece);
     void set(const std::tuple<int, int> &location, const Piece& piece);
+    void remove(const std::string& location);
+    void remove(const std::tuple<int, int> &location);
     friend std::ostream& operator<<(std::ostream& os, const BoardBitmap& b);
     static std::tuple<int, int> index(const std::string &position);
     static std::string file_name(int index);

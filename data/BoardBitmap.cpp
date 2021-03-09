@@ -17,10 +17,10 @@ std::tuple<int, int> BoardBitmap::index(const std::string &position) {
     std::transform(lower.begin(), lower.end(), lower.begin(), [](unsigned char c) -> unsigned char {
         return std::tolower(c);
     });
-
+    // Somewhat dangerous as we have no range checking at all. Just don't call the function with nonsense.
     int x = lower[0] - 'a';
     int y = lower[1] - '0' - 1;
-    return {x,y}; // Row ordering
+    return {x,y};
 }
 
 /**
@@ -29,15 +29,12 @@ std::tuple<int, int> BoardBitmap::index(const std::string &position) {
  */
 std::array<std::array<bool, 8>, 8> BoardBitmap::occupancy() const {
     auto result = std::array<std::array<bool, 8>, 8>();
-    #pragma omp parallel for collapse(2) default(none) shared(result)
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             bool occupied = false;
 
             #pragma omp simd reduction(||:occupied)
-            for (int k = 0; k < 12; k++) {
-                occupied = occupied || state[i][j][k];
-            }
+            for (int k = 0; k < 12; k++) occupied = occupied || state[i][j][k];
 
             result[i][j] = occupied;
         }
@@ -50,12 +47,15 @@ std::array<std::array<bool, 8>, 8> BoardBitmap::occupancy() const {
  * @return 8 by 8 array of Pieces
  */
 std::array<std::array<Piece, 8>, 8> BoardBitmap::pieces() const {
-    std::array<std::array<Piece, 8>, 8> result;
+    // Apparently the best way to initialize an array to a single nonzero value requires template metaprogramming
+    std::array<std::array<Piece, 8>, 8> result{};
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
+            // This doesn't require templates
+            result[i][j] = EMPTY;
             for (int k = 0; k < 12; k++) {
                 if (state[i][j][k]) {
-                    result[i][j] = Piece::piece_index(k);
+                    result[i][j] = piece_index(k);
                 }
             }
         }
@@ -69,16 +69,7 @@ std::array<std::array<Piece, 8>, 8> BoardBitmap::pieces() const {
  * @param piece FEN string representation of piece to set
  */
 void BoardBitmap::set(const std::tuple<int, int> &location, const std::string &piece) {
-    set(location, Piece(piece));
-}
-
-/**
- * Sets piece on location
- * @param location Location on board to set
- * @param piece Type of piece to set
- */
-void BoardBitmap::set(const std::tuple<int, int> &location, const PieceType &piece) {
-    set(location, Piece(piece));
+    set(location, piece_from_name(piece));
 }
 
 /**
@@ -89,22 +80,13 @@ void BoardBitmap::set(const std::tuple<int, int> &location, const PieceType &pie
 void BoardBitmap::set(const std::tuple<int, int> &location, const Piece &piece) {
     int x = get<0>(location);
     int y = get<1>(location);
-    #pragma omp parallel for default(none) shared(x, y, piece)
-    for (int c = 0; c < 12; c++) {
-        if (c == piece.piece_type) {
-            state[x][y][c] = true;
-        } else {
-            state[x][y][c] = false;
-        }
-    }
+    #pragma omp simd
+    for (int c = 0; c < 12; c++) state[x][y][c] = false;
+    state[x][y][piece] = true;
 }
 
 void BoardBitmap::set(const std::string &location, const std::string &piece) {
-    set(index(location), piece);
-}
-
-void BoardBitmap::set(const std::string &location, const PieceType &piece) {
-    set(index(location), piece);
+    set(index(location), piece_from_name(piece));
 }
 
 void BoardBitmap::set(const std::string &location, const Piece &piece) {
@@ -139,23 +121,23 @@ std::ostream &operator<<(std::ostream &os, const BoardBitmap &b) {
 }
 
 /**
- * Returns the board that results when moving pieces
- * @param origin Location to move from
- * @param destination Location to move to
- * @return The new board that results
- */
-BoardBitmap BoardBitmap::move(const std::tuple<int, int> &origin, const std::tuple<int, int> &destination) const {
-    // TODO
-    return BoardBitmap();
-}
-
-/**
  * Returns the letter name of a file (column on the board)
  * @param index Index of file
  * @return Name of file
  */
 std::string BoardBitmap::file_name(int index) {
     return std::string(1, 'a' + index);
+}
+
+void BoardBitmap::remove(const std::string &location) {
+    remove(index(location));
+}
+
+void BoardBitmap::remove(const std::tuple<int, int> &location) {
+    int x = get<0>(location);
+    int y = get<1>(location);
+    #pragma omp simd
+    for (int c = 0; c < 12; c++) state[x][y][c] = false;
 }
 
 
