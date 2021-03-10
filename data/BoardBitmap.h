@@ -12,6 +12,8 @@
 
 class BoardBitmap {
 public:
+    BoardBitmap() = default;
+    explicit BoardBitmap(const std::string& fen);
     [[nodiscard]] std::array<std::array<bool, 8>, 8> occupancy() const;
     [[nodiscard]] std::array<std::array<Piece, 8>, 8> pieces() const;
     void set(const std::string& location, const std::string& piece);

@@ -12,3 +12,4 @@ add_subdirectory(util)
 add_subdirectory(test)
 
 add_executable(chess main.cpp)
+target_link_libraries(chess data game util)

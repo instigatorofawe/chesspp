@@ -131,3 +131,4 @@ std::string FENParser::trim(const std::string &input) {
     // If only whitespace is in the string, return an empty string
     return std::string();
 }
+

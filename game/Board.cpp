@@ -10,14 +10,8 @@
  * @param fen Forsyth-Edwards notation representation of board state
  */
 Board::Board(const std::string &fen) {
-    // TODO
     FENParser parser(fen);
 }
-
-/**
- * Default constructor initializes board from starting position.
- */
-Board::Board() : Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {}
 
 /**
  * Generates FEN string representation of board state.

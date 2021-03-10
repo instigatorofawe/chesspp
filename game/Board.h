@@ -14,7 +14,8 @@
 
 class Board {
 public:
-    Board();
+    // Default constructor initializes board from starting position
+    Board() : Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {}
     explicit Board(const std::string &fen);
     std::string fen();
     bool valid(const std::string &move);
