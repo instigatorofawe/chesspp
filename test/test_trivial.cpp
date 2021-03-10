@@ -35,3 +35,8 @@ TEST(test_trivial, test_string_index) {
 
     cout << x.find("12") << endl;
 }
+
+TEST(test_trivial, test_stoi) {
+    EXPECT_EQ(std::stoi("123"), 123);
+    EXPECT_THROW(std::stoi("abc123"), std::invalid_argument);
+}

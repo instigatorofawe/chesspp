@@ -17,7 +17,7 @@ std::tuple<int, int> BoardBitmap::index(const std::string &position) {
     std::transform(lower.begin(), lower.end(), lower.begin(), [](unsigned char c) -> unsigned char {
         return std::tolower(c);
     });
-    // Somewhat dangerous as we have no range checking at all. Just don't call the function with nonsense.
+    // Somewhat dangerous as we have no range checking at all.
     int x = lower[0] - 'a';
     int y = lower[1] - '0' - 1;
     return {x,y};
@@ -51,7 +51,7 @@ std::array<std::array<Piece, 8>, 8> BoardBitmap::pieces() const {
     std::array<std::array<Piece, 8>, 8> result{};
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            // This doesn't require templates
+            // This doesn't require templates, but we lose a bit of performance unless the compiler is smart
             result[i][j] = EMPTY;
             for (int k = 0; k < 12; k++) {
                 if (state[i][j][k]) {
