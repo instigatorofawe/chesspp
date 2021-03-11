@@ -6,14 +6,6 @@
 #include "util/FENParser.h"
 
 /**
- * Constructs a board from Forsyth-Edwards notation
- * @param fen Forsyth-Edwards notation representation of board state
- */
-Board::Board(const std::string &fen) {
-    FENParser parser(fen);
-}
-
-/**
  * Generates FEN string representation of board state.
  * @return
  */
@@ -38,6 +30,35 @@ Board Board::do_move(const std::string &move) {
  * @return true if valid, false if not.
  */
 bool Board::valid(const std::string &move) {
+    // TODO
     return false;
+}
+
+/**
+ * Initializes a board to the standard starting position.
+ * @return Board initialized to the standard starting position.
+ */
+Board Board::starting_position() {
+    return FEN::parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+}
+
+/**
+ * Gets list of legal moves in the current position
+ * @return Vector of strings of legal moves in algebraic notation
+ */
+std::vector<std::string> Board::moves() {
+    // TODO
+    return std::vector<std::string>();
+}
+
+/**
+ * Returns the board which results from doing a move
+ * @param origin Square to move from
+ * @param destination Square to move to
+ * @return Resulting board
+ */
+Board Board::do_move(const std::tuple<int, int> &origin, const std::tuple<int, int> &destination) {
+    // TODO
+    return Board();
 }
 

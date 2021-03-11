@@ -5,21 +5,14 @@
 #include "FENParser.h"
 #include <algorithm>
 #include <stdexcept>
-
-/**
- * Builds a parser for a FEN string.
- * @param fen string to parse.
- */
-FENParser::FENParser(const std::string &fen) {
-    // TODO
-}
+#include <game/Board.h>
 
 /**
  * Validates FEN string
  * @param fen string to validate
  * @return true if valid, false if not.
  */
-bool FENParser::validate(const std::string &fen) {
+bool FEN::validate(const std::string &fen) {
     // Components: board, turn, castling, en passant, halfmove, fullmove
     static std::array<char, 12> pieces{'K', 'Q', 'R', 'B', 'N', 'P', 'k', 'q', 'r', 'b', 'n', 'p'};
     static std::array<char, 4> castle{'K','Q','k','q'};
@@ -79,11 +72,11 @@ bool FENParser::validate(const std::string &fen) {
  * @param delimiter Delimiter
  * @return Vector of tokens
  */
-std::vector<std::string> FENParser::tokenize(const std::string &input, const std::string &delimiter) {
+std::vector<std::string> FEN::tokenize(const std::string &input, const std::string &delimiter) {
     auto result = std::vector<std::string>();
     // Working copy of the input that we can modify
     auto working = input;
-    int position = 0;
+    int position;
     while ((position = working.find(delimiter)) != std::string::npos) {
         result.push_back(working.substr(0, position));
         working.erase(0, position + delimiter.length());
@@ -117,7 +110,7 @@ static inline void inline_trim(std::string &s) {
  * @param input string to trim
  * @return Trimmed string
  */
-std::string FENParser::trim(const std::string &input) {
+std::string FEN::trim(const std::string &input) {
     auto result = input;
 
     auto start_index = std::find_if(result.begin(), result.end(), [](unsigned char c) {
@@ -130,5 +123,104 @@ std::string FENParser::trim(const std::string &input) {
     }
     // If only whitespace is in the string, return an empty string
     return std::string();
+}
+
+/**
+ * Parses a FEN string into a board state
+ * @param fen String to parse
+ * @return Board object, initialized to state represented in FEN
+ */
+Board FEN::parse(const std::string &fen) {
+    Board result;
+
+    auto fields = tokenize(fen, " ");
+    auto ranks = tokenize(fields[0], "/");
+
+    // Field 1: pieces on board
+    for (int c = 0; c < 8; c++) {
+        // We begin on the 8th rank, and work our way back
+        int rank = 7 - c;
+        // We begin on the a file, and work our way to the right.
+        int file = 0;
+        for (const char& piece : ranks[c]) {
+            // If it's numeric, it symbolizes the number of spaces we skip
+            if (std::isdigit(piece)) {
+                auto num_spaces = piece - '0';
+                file += num_spaces;
+            } else {
+                switch(piece) {
+                    case 'K':
+                        result.pieces.set(std::tuple<int, int>{file, rank}, WHITE_KING);
+                        break;
+                    case 'Q':
+                        result.pieces.set(std::tuple<int, int>{file, rank}, WHITE_QUEEN);
+                        break;
+                    case 'R':
+                        result.pieces.set(std::tuple<int, int>{file, rank}, WHITE_ROOK);
+                        break;
+                    case 'B':
+                        result.pieces.set(std::tuple<int, int>{file, rank}, WHITE_BISHOP);
+                        break;
+                    case 'N':
+                        result.pieces.set(std::tuple<int, int>{file, rank}, WHITE_KNIGHT);
+                        break;
+                    case 'P':
+                        result.pieces.set(std::tuple<int, int>{file, rank}, WHITE_PAWN);
+                        break;
+                    case 'k':
+                        result.pieces.set(std::tuple<int, int>{file, rank}, BLACK_KING);
+                        break;
+                    case 'q':
+                        result.pieces.set(std::tuple<int, int>{file, rank}, BLACK_QUEEN);
+                        break;
+                    case 'r':
+                        result.pieces.set(std::tuple<int, int>{file, rank}, BLACK_ROOK);
+                        break;
+                    case 'b':
+                        result.pieces.set(std::tuple<int, int>{file, rank}, BLACK_BISHOP);
+                        break;
+                    case 'n':
+                        result.pieces.set(std::tuple<int, int>{file, rank}, BLACK_KNIGHT);
+                        break;
+                    case 'p':
+                        result.pieces.set(std::tuple<int, int>{file, rank}, BLACK_PAWN);
+                        break;
+                    default:
+                        break;
+                }
+                file++;
+            }
+        }
+    }
+    // Field 2: active color
+    if (fields[1] == "w") result.active = WHITE;
+    if (fields[1] == "b") result.active = BLACK;
+
+    // Field 3: castling availability
+    for (const char& c : fields[2]) {
+        switch(c) {
+            case 'K':
+                result.white_castle_kingside = true;
+                break;
+            case 'Q':
+                result.white_castle_queenside = true;
+                break;
+            case 'k':
+                result.black_castle_kingside = true;
+                break;
+            case 'q':
+                result.black_castle_queenside = true;
+            default:
+                break;
+        }
+    }
+    // Field 4: en passant target
+    // TODO
+    // Field 5: halfmove clock
+    // TODO
+    // Field 6: fullmove clock
+    // TODO
+
+    return result;
 }
 

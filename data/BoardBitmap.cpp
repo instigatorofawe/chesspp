@@ -142,8 +142,3 @@ void BoardBitmap::remove(const std::tuple<int, int> &location) {
     for (int c = 0; c < 12; c++) state[x][y][c] = false;
 }
 
-BoardBitmap::BoardBitmap(const std::string &fen) {
-    auto ranks = FENParser::tokenize(fen, "/");
-    // TODO
-}
-

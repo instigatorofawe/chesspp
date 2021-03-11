@@ -59,4 +59,11 @@ TEST(test_data, test_set) {
     EXPECT_EQ(pieces[7][7], BLACK_ROOK);
     EXPECT_EQ(pieces[0][7], BLACK_ROOK);
     cout << map << endl;
+
+    auto occupancy = map.occupancy();
+    EXPECT_TRUE(occupancy[0][0]);
+    EXPECT_TRUE(occupancy[0][1]);
+    EXPECT_TRUE(occupancy[1][1]);
+    EXPECT_TRUE(occupancy[6][1]);
+    EXPECT_FALSE(occupancy[1][5]);
 }

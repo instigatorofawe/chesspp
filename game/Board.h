@@ -7,20 +7,27 @@
 #ifndef CHESS_BOARD_H
 #define CHESS_BOARD_H
 
+#include <vector>
 #include <string>
 #include <tuple>
 #include "Player.h"
+#include <util/FENParser.h>
 #include "data/BoardBitmap.h"
 
 class Board {
 public:
     // Default constructor initializes board from starting position
-    Board() : Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {}
-    explicit Board(const std::string &fen);
+    Board() = default;
+    static Board starting_position();
+
     std::string fen();
     bool valid(const std::string &move);
     Board do_move(const std::string &move);
-private:
+    Board do_move(const std::tuple<int, int> &origin, const std::tuple<int, int> &destination);
+    std::vector<std::string> moves();
+
+    friend Board FEN::parse(const std::string &fen);
+
     // Bitmap representation of pieces
     BoardBitmap pieces{};
     // Whether castling is legal
